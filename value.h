@@ -14,11 +14,11 @@ namespace Config
 	class ValueConverter;
 		
 	template<class T>
-	struct Value:public Parameter
+	struct Value final:public Parameter
 		{
 		constexpr Value(const char_t* label_,uint32_t id_
 			,uint32_t group_,Mode type_,const ValueConverter<T>* conv):
-			Parameter(label_,id_,group_,type_,type<T>(),sizeof(T))
+			Parameter(label_,sizeof(*this),id_,group_,type_,type<T>(),sizeof(T))
 			,converter(conv)
 			{}
 

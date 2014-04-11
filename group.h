@@ -5,6 +5,8 @@ target[name[group.h] type[include]]
 #ifndef CONFIG_GROUP_H
 #define CONFIG_GROUP_H
 
+#include "parameterinfo.h"
+
 namespace Config
 	{
 	struct Group:public ParameterInfo

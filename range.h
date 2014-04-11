@@ -14,12 +14,12 @@ namespace Config
 	class ValueConverter;
 		
 	template<class T>
-	struct Range:public Parameter
+	struct Range final:public Parameter
 		{
 		constexpr Range(const char_t* label_,uint32_t id_
 			,uint32_t group_,Mode type_,const ValueConverter<T>* conv
 			,T val_min_,T val_max_):
-			Parameter(label_,id_,group_,type_,type<T>(),sizeof(T))
+			Parameter(label_,sizeof(*this),id_,group_,type_,type<T>(),sizeof(T))
 			,converter(conv),val_min(val_min_),val_max(val_max_)
 			{}
 

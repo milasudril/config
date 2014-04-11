@@ -39,9 +39,9 @@ namespace Config
 		TypeData type_data;
 		uint32_t size_data;
 		
-		constexpr Parameter(const char_t* label_,uint32_t id_
+		constexpr Parameter(const char_t* label_,uint32_t size_,uint32_t id_
 			,uint32_t group_,Mode mode,TypeData type_data_,uint32_t size_data_):
-			ParameterInfo(label_,id_,group_,typeGet(mode)),type_data(type_data_)
+			ParameterInfo(label_,size_,id_,group_,typeGet(mode)),type_data(type_data_)
 			,size_data(size_data_)
 			{}
 		private:
