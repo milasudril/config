@@ -1,7 +1,8 @@
 #ifdef __WAND__
-target[name[paramcollection.o] type[object]]
+target[name[interfacecreate.o] type[object]]
 #endif
 
+#include "interfacecreate.h"
 #include "group.h"
 #include "value.h"
 #include "range.h"
@@ -10,7 +11,6 @@ target[name[paramcollection.o] type[object]]
 #include "string.h"
 #include "path.h"
 #include "datetime.h"
-
 #include "paramcollector.h"
 #include "interfacebuilder.h"
 
@@ -158,6 +158,7 @@ namespace
 			case Parameter::TypeData::DATETIME:
 				builder.create(downcast<DateTime>(param),*(Herbs::Timestamp*)ptr_data);
 				break;
+
 			default:
 			//	Unknown type
 				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
@@ -186,46 +187,43 @@ namespace
 		}
 	}
 
-namespace Config
+void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& builder)
 	{
-	void paramsCollect(const ParamCollector& params_in,InterfaceBuilder& builder)
+
+//	Create look-up for parameter ID:s
+	std::map<uint32_t,const ParameterInfo*> pmap;	
+	auto params=params_in.paramInfoGet();
+	while(*params!=nullptr)
 		{
-	
-	//	Create look-up for parameter ID:s
-		std::map<uint32_t,const ParameterInfo*> pmap;	
-		auto params=params_in.paramInfoGet();
-		while(*params!=nullptr)
+		auto ip=pmap.insert({(*params)->id,*params});
+		if(!ip.second)
 			{
-			auto ip=pmap.insert({(*params)->id,*params});
-			if(!ip.second)
-				{
-			//	Duplicated ID
-				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-				}
-			++params;
+		//	Duplicated ID
+			throw Herbs::ExceptionMissing(___FILE__,__LINE__);
 			}
-			
-		std::set<uint32_t> groups_created;
-		Herbs::Stack<const ParameterInfo*> param_stack(16);
-		params=params_in.paramInfoGet();
-		param_stack.push(*params);
-		while(param_stack.depth())
+		++params;
+		}
+		
+	std::set<uint32_t> groups_created;
+	Herbs::Stack<const ParameterInfo*> param_stack(16);
+	params=params_in.paramInfoGet();
+	param_stack.push(*params);
+	while(param_stack.depth())
+		{
+		auto param=param_stack.top();
+		if(param->group==param->id)
 			{
-			auto param=param_stack.top();
-			if(param->group==param->id)
-				{
-			//	Self-refering group
-				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-				}
-	
-			auto ip=groups_created.find(param->group);
-			if(ip==groups_created.end())
-				{param_stack.push(pmap[param->group]);}
-			else
-				{
-				createDispatch(params_in.paramAddressGet(param->id),builder,*param);
-				param_stack.pop();
-				}
+		//	Self-refering group
+			throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+			}
+
+		auto ip=groups_created.find(param->group);
+		if(ip==groups_created.end())
+			{param_stack.push(pmap[param->group]);}
+		else
+			{
+			createDispatch(params_in.paramAddressGet(param->id),builder,*param);
+			param_stack.pop();
 			}
 		}
 	}
