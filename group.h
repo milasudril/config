@@ -9,8 +9,11 @@ target[name[group.h] type[include]]
 
 namespace Config
 	{
-	struct Group:public ParameterInfo
+	struct Group final:public ParameterInfo
 		{
+		constexpr Group(const char_t* label_,uint32_t id_,uint32_t group_):
+			ParameterInfo(label_,sizeof(*this),id_,group_,Type::GROUP)
+			{}
 		};
 	};
 

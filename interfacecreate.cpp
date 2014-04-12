@@ -167,14 +167,15 @@ namespace
 	
 	void createDispatch(void* ptr_data
 		,Config::InterfaceBuilder& builder
-		,const Config::ParameterInfo& obj)
+		,const Config::ParameterInfo& obj
+		,size_t depth)
 		{
 		using namespace Config;
 		
 		switch(obj.type)
 			{
 			case ParameterInfo::Type::GROUP:
-				builder.create(downcast<Group>(obj));
+				builder.create(downcast<Group>(obj),depth);
 				break;
 					
 			case ParameterInfo::Type::PARAM_INPUT:
@@ -204,26 +205,45 @@ void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& b
 		++params;
 		}
 		
-	std::set<uint32_t> groups_created;
+	std::set<uint32_t> visited;
 	Herbs::Stack<const ParameterInfo*> param_stack(16);
 	params=params_in.paramInfoGet();
-	param_stack.push(*params);
-	while(param_stack.depth())
+	while(*params!=nullptr)
 		{
-		auto param=param_stack.top();
-		if(param->group==param->id)
-			{
-		//	Self-refering group
-			throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+		auto param=*params;
+		if(visited.find(param->id)==visited.end())
+			{	
+			if(param->group==param->id)
+				{
+			//	Self-refering group
+				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+				}
+			param_stack.push(param);
+		
+		//	While parent not is not created, and we have not found the root node
+			while(visited.find(param->group)==visited.end()
+				&& param->group!=ParameterInfo::ID_INVALID)
+				{
+				auto ipm=pmap.find(param->group);
+				if(ipm==pmap.end())
+					{
+				//	Unknown group id
+					throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+					}
+				param_stack.push(ipm->second);
+				param=ipm->second;
+				}
+			
+			while(param_stack.depth())
+				{
+				auto param_create=param_stack.pop();
+				createDispatch(params_in.paramAddressGet(param_create->id)
+					,builder,*param_create
+					,0);
+				visited.insert(param_create->id);
+				}
+				
 			}
-
-		auto ip=groups_created.find(param->group);
-		if(ip==groups_created.end())
-			{param_stack.push(pmap[param->group]);}
-		else
-			{
-			createDispatch(params_in.paramAddressGet(param->id),builder,*param);
-			param_stack.pop();
-			}
+		++params;
 		}
 	}

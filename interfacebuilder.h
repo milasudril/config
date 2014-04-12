@@ -32,7 +32,7 @@ namespace Config
 	class InterfaceBuilder
 		{
 		public:
-			virtual void create(const Group& group)=0;
+			virtual void create(const Group& group,size_t level)=0;
 	
 			virtual void create(const Value<int32_t>& value,int32_t& x)=0;
 			virtual void create(const Value<int64_t>& value,int64_t& x)=0;
@@ -45,8 +45,8 @@ namespace Config
 			
 			virtual void create(const Value<float>& value,float& x)=0;
 			virtual void create(const Value<double>& value,double& x)=0;
-			virtual void create(const Range<float>& value,float& x)=0;
-			virtual void create(const Range<double>& value,double& x)=0;
+			virtual void create(const Range<float>& range,float& x)=0;
+			virtual void create(const Range<double>& range,double& x)=0;
 			
 			virtual void create(const NameListed& namelist,uint32_t& x)=0;
 			virtual void create(const FlagGroup& group,uint32_t& x)=0;

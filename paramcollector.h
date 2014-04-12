@@ -5,6 +5,8 @@ target[name[paramcollector.h] type[include]]
 #ifndef CONFIG_PARAMCOLLECTOR_H
 #define CONFIG_PARAMCOLLECTOR_H
 
+#include <cstdint>
+
 namespace Config
 	{
 	struct ParameterInfo;
@@ -17,7 +19,7 @@ namespace Config
 			*/
 			virtual const ParameterInfo* const* paramInfoGet() const=0;
 			
-			/*Returns the address of the parameter with the given id;
+			/**Returns the address of the parameter with the given id.
 			*/
 			virtual void* paramAddressGet(uint32_t id) const=0;
 		};
