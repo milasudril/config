@@ -6,6 +6,7 @@ target[type[include] name[interfacebuilder.h]
 #define CONFIG_INTERFACEBUILDER_H
 
 #include "parameterinfo.h"
+#include <cstddef>
 
 namespace Herbs
 	{

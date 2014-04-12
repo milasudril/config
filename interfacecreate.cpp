@@ -16,18 +16,42 @@ target[name[interfacecreate.o] type[object]]
 
 #include <herbs/stack/stack.h>
 #include <herbs/exceptionmissing/exceptionmissing.h>
+#include <herbs/intformat/intformat.h>
+#include <herbs/stringformat/stringformat.h>
+#include <herbs/messageprinter/messageprinter.h>
 #include <set>
 #include <map>
 
 namespace
 	{
+	class InconsistentType:public Herbs::Exception
+		{
+		public:
+			InconsistentType(uint32_t s_exp,uint32_t s_got):
+				expected(s_exp),got(s_got)
+				{}
+
+			void print(Herbs::MessagePrinter& printer) const
+				{
+				printer.print(Herbs::format(STR("Fel storlek på typ. "
+					"Fick %0 (förväntat %1)"),
+					{
+					 Herbs::IntFormat<uint32_t>(got)
+					,Herbs::IntFormat<uint32_t>(expected)
+					}));
+				}
+				
+		private:
+			uint32_t expected;
+			uint32_t got;
+		};
+		
 	template<class T>
 	const T& downcast(const Config::ParameterInfo& obj)
 		{
-		if(obj.size==sizeof(T))
+		if(obj.size>=sizeof(T))
 			{return (const T&)obj;}
-	//	Inconsistent type
-		throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+		throw InconsistentType(sizeof(T),obj.size);
 		}
 	
 	void createDispatch(void* ptr_data
@@ -182,6 +206,7 @@ namespace
 			case ParameterInfo::Type::STATUS_INDICATOR:
 				createDispatch(ptr_data,builder,downcast<Parameter>(obj));
 				break;
+			default:
 			//	Unknown type
 				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
 			}
