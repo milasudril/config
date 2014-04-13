@@ -29,6 +29,7 @@ namespace
 		,2
 		,1
 		,Config::Parameter::Mode::PARAM
+		,offsetof(Config::TestSetup,val_int32)
 		,nullptr
 		};
 	
@@ -38,6 +39,7 @@ namespace
 		,3
 		,0
 		,Config::Parameter::Mode::PARAM
+		,offsetof(Config::TestSetup,val_int64)
 		,nullptr
 		};
 	
@@ -56,21 +58,10 @@ Config::TestParams::TestParams(TestSetup& obj):test(obj)
 	{
 	}
 
-const Config::ParameterInfo* const* Config::TestParams::paramInfoGet() const
+Config::ParamCollector::SetupInfo Config::TestParams::setupinfoGet() const
 	{
-	return params;
+	return {params,sizeof(test),&test};
 	}
 
-void* Config::TestParams::paramAddressGet(uint32_t id) const
-	{
-	switch(id)
-		{
-		case 2:
-			return &test.val_int32;
-		case 3:
-			return &test.val_int64;
-		}
-	return nullptr;
-	}
 
 	

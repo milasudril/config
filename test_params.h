@@ -16,9 +16,7 @@ namespace Config
 		{
 		public:
 			TestParams(TestSetup& obj);
-			
-			const ParameterInfo* const* paramInfoGet() const;
-			void* paramAddressGet(uint32_t id) const;
+			SetupInfo setupinfoGet() const;
 			
 			TestSetup& test;
 		};

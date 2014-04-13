@@ -17,8 +17,10 @@ namespace Config
 	struct Value final:public Parameter
 		{
 		constexpr Value(const char_t* label_,uint32_t id_
-			,uint32_t group_,Mode type_,const ValueConverter<T>* conv):
-			Parameter(label_,sizeof(*this),id_,group_,type_,type<T>(),sizeof(T))
+			,uint32_t group_,Mode type_,uint32_t offset
+			,const ValueConverter<T>* conv):
+			Parameter(label_,sizeof(*this),id_,group_,type_,type<T>(),sizeof(T)
+				,offset)
 			,converter(conv)
 			{}
 

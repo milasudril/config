@@ -36,14 +36,17 @@ namespace Config
 			,STATUS=Type::STATUS_INDICATOR
 			};
 
-		TypeData type_data;
-		uint32_t size_data;
+		TypeData data_type;
+		uint32_t data_size;
+		uint32_t data_offset;
 		
 		constexpr Parameter(const char_t* label_,uint32_t size_,uint32_t id_
-			,uint32_t group_,Mode mode,TypeData type_data_,uint32_t size_data_):
-			ParameterInfo(label_,size_,id_,group_,typeGet(mode)),type_data(type_data_)
-			,size_data(size_data_)
+			,uint32_t group_,Mode mode,TypeData data_type_,uint32_t data_size_
+			,uint32_t data_offset_):
+			ParameterInfo(label_,size_,id_,group_,typeGet(mode))
+			,data_type(data_type_),data_size(data_size_),data_offset(data_offset_)
 			{}
+
 		private:
 			static constexpr Type typeGet(Mode m)
 				{

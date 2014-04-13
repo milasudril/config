@@ -5,7 +5,7 @@ target[name[paramcollector.h] type[include]]
 #ifndef CONFIG_PARAMCOLLECTOR_H
 #define CONFIG_PARAMCOLLECTOR_H
 
-#include <cstdint>
+#include <cstddef>
 
 namespace Config
 	{
@@ -14,14 +14,23 @@ namespace Config
 	class ParamCollector
 		{
 		public:
-			/**Returns an array of pointers to ParameterInfo objects. The last
-			 * pointer has to be nullptr.
-			*/
-			virtual const ParameterInfo* const* paramInfoGet() const=0;
+			struct SetupInfo
+				{
+				/**An array of pointers to ParameterInfo objects. The last
+				* pointer has to be nullptr.
+				*/
+				const ParameterInfo* const* param_info;
+				
+				/**The size of the setup BLOB.
+				 */
+				size_t blob_size;
+				
+				/**The BLOB address.
+				*/
+				void* blob_address;
+				};
 			
-			/**Returns the address of the parameter with the given id.
-			*/
-			virtual void* paramAddressGet(uint32_t id) const=0;
+			virtual SetupInfo setupinfoGet() const=0;
 		};
 	}
 

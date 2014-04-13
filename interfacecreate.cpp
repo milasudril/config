@@ -54,16 +54,17 @@ namespace
 		throw InconsistentType(sizeof(T),obj.size);
 		}
 	
-	void createDispatch(void* ptr_data
+	void createDispatch(char* ptr_data
 		,Config::InterfaceBuilder& builder
 		,const Config::Parameter& param)
 		{
 		using namespace Config;
+		ptr_data+=param.data_offset;
 		
-		switch(param.type_data)
+		switch(param.data_type)
 			{
 			case Parameter::TypeData::INT:
-				switch(param.size_data)
+				switch(param.data_size)
 					{
 					case 4:
 						builder.create(downcast<Value<int32_t> >(param)
@@ -79,7 +80,7 @@ namespace
 					}
 				break;
 			case Parameter::TypeData::INT_RANGE:
-				switch(param.size_data)
+				switch(param.data_size)
 					{
 					case 4:
 						builder.create(downcast<Range<int32_t> >(param) 
@@ -96,7 +97,7 @@ namespace
 				break;
 				
 			case Parameter::TypeData::INT_UNSIGNED:
-				switch(param.size_data)
+				switch(param.data_size)
 					{
 					case 4:
 						builder.create(downcast<Value<uint32_t> >(param)
@@ -113,7 +114,7 @@ namespace
 				break;
 			
 			case Parameter::TypeData::INT_UNSIGNED_RANGE:
-				switch(param.size_data)
+				switch(param.data_size)
 					{
 					case 4:
 						builder.create(downcast<Range<uint32_t> >(param)
@@ -130,7 +131,7 @@ namespace
 				break;
 			
 			case Parameter::TypeData::FLOAT:
-				switch(param.size_data)
+				switch(param.data_size)
 					{
 					case 4:
 						builder.create(downcast<Value<float> >(param)
@@ -147,7 +148,7 @@ namespace
 				break;
 			
 			case Parameter::TypeData::FLOAT_RANGE:
-				switch(param.size_data)
+				switch(param.data_size)
 					{
 					case 4:
 						builder.create(downcast<Range<float> >(param)
@@ -189,7 +190,7 @@ namespace
 			}
 		}
 	
-	void createDispatch(void* ptr_data
+	void createDispatch(char* ptr_data
 		,Config::InterfaceBuilder& builder
 		,const Config::ParameterInfo& obj
 		,size_t depth)
@@ -215,10 +216,11 @@ namespace
 
 void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& builder)
 	{
-
+	auto si=params_in.setupinfoGet();
+		
 //	Create look-up for parameter ID:s
 	std::map<uint32_t,const ParameterInfo*> pmap;	
-	auto params=params_in.paramInfoGet();
+	auto params=si.param_info;
 	while(*params!=nullptr)
 		{
 		auto ip=pmap.insert({(*params)->id,*params});
@@ -232,7 +234,7 @@ void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& b
 		
 	std::set<uint32_t> visited;
 	Herbs::Stack<const ParameterInfo*> param_stack(16);
-	params=params_in.paramInfoGet();
+	params=si.param_info;
 	while(*params!=nullptr)
 		{
 		auto param=*params;
@@ -262,7 +264,7 @@ void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& b
 			while(param_stack.depth())
 				{
 				auto param_create=param_stack.pop();
-				createDispatch(params_in.paramAddressGet(param_create->id)
+				createDispatch((char*)si.blob_address
 					,builder,*param_create
 					,0);
 				visited.insert(param_create->id);

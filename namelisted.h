@@ -12,8 +12,9 @@ namespace Config
 	struct NameListed final:public Parameter
 		{
 		constexpr NameListed(const char_t* label_,uint32_t id_
-			,uint32_t group_,Mode type_,const char_t* const* list):
-			Parameter(label_,sizeof(*this),id_,group_,type_,TypeData::NAME_LISTED,0)
+			,uint32_t group_,Mode type_,uint32_t offset,const char_t* const* list):
+			Parameter(label_,sizeof(*this),id_,group_,type_,TypeData::NAME_LISTED
+				,sizeof(uint32_t),offset)
 			,item_list(list)
 			{}
 
