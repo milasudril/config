@@ -13,42 +13,56 @@ namespace
 		{
 		STR("Lorem Ipsum")
 		,0
-		,Config::ParameterInfo::ID_INVALID
+		,0
 		};
 	
 	static const Config::Group mollit
 		{
 		STR("Mollit Anim")
 		,1
-		,0
+		,1
 		};
 	
 	static const Config::Value<int32_t> val_int32
 		{
 		STR("int32")
 		,2
-		,1
 		,Config::Parameter::Mode::PARAM
 		,offsetof(Config::TestSetup,val_int32)
 		,nullptr
+		};
+	
+	static const Config::Group foo
+		{
+		STR("Foo")
+		,4
+		,2
 		};
 	
 	static const Config::Value<int64_t> val_int64
 		{
 		STR("int64")
 		,3
-		,0
 		,Config::Parameter::Mode::PARAM
 		,offsetof(Config::TestSetup,val_int64)
 		,nullptr
 		};
 	
+	static const Config::Group bar
+		{
+		STR("Bar")
+		,4
+		,0
+		};
+	
 	static const Config::ParameterInfo* params[]=
 		{
-		&mollit
-		,&lorem_ipsum
+		&lorem_ipsum
+		,&mollit
 		,&val_int32
+		,&foo
 		,&val_int64
+		,&bar
 		,nullptr
 		};
 	}
