@@ -214,7 +214,6 @@ void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& b
 				if(group.level==group_level)
 					{
 					group_ids.push({group_current,group_level});
-					printf("group_current=%u\n",group_current);
 					builder.create(group,group_current);
 					group_current=group.id;
 					}
@@ -223,7 +222,6 @@ void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& b
 					if(group.level > group_level)
 						{
 						group_ids.push({group_current,group_level});
-						printf("group_current=%u\n",group_current);
 						builder.create(group,group_current);
 						group_current=group.id;
 						group_level=group.level;
@@ -240,7 +238,6 @@ void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& b
 							}
 						group_current=node.first;
 						group_ids.push(node);
-						printf("group_current=%u\n",group_current);
 						builder.create(group,group_current);
 						group_current=group.id;
 						group_level=group.level;
@@ -251,14 +248,12 @@ void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& b
 					
 			case ParameterInfo::Type::PARAM_INPUT:
 			case ParameterInfo::Type::STATUS_INDICATOR:
-				printf("group_current=%u\n",group_current);
 				createDispatch((char*)ptr_data,builder,downcast<Parameter>(*obj),group_current);
 				break;
 			default:
 			//	Unknown type
 				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
 			}
-		putchar('\n');
 		++param;
 		}
 	
