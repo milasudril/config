@@ -45,8 +45,8 @@ namespace
 	
 	static const Config::ParameterInfo* params[]=
 		{
-		&lorem_ipsum
-		,&mollit
+		&mollit
+		,&lorem_ipsum
 		,&val_int32
 		,&val_int64
 		,nullptr

@@ -212,65 +212,132 @@ namespace
 				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
 			}
 		}
+	
+	std::map<uint32_t,const Config::ParameterInfo*> mapIdCreate(const Config::ParameterInfo* const* params)
+		{
+		std::map<uint32_t, const Config::ParameterInfo*> idmap;
+		while(*params!=nullptr)
+			{
+			auto ip=idmap.insert({(*params)->id,*params});
+			if(!ip.second)
+				{
+			//	Duplicated ID
+				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+				}
+			++params;
+			}
+		return idmap;
+		}
+	
+	class ParamTraverseCallback
+		{
+		public:
+			virtual void operator()(const Config::ParameterInfo& param,size_t level)=0;
+		};
+	
+	void traverse(const Config::ParameterInfo* const* params
+		,const std::map<uint32_t,const Config::ParameterInfo*>& idmap
+		,ParamTraverseCallback& callback
+		,size_t depth_max_hint)
+		{
+		std::set<uint32_t> visited;
+	
+		Herbs::Stack<std::pair<const Config::ParameterInfo*, size_t> > param_stack
+			(depth_max_hint);
+		size_t level_count=0;
+		while(*params!=nullptr)
+			{
+			auto param=*params;
+			if(visited.find(param->id)==visited.end())
+				{	
+				if(param->group==param->id)
+					{
+				//	Self-refering group
+					throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+					}
+
+				if(param->type==Config::ParameterInfo::Type::GROUP)
+					{++level_count;}
+				param_stack.push({param,level_count});
+				
+			//	While parent group is not created, and we have not found the root node,
+			//	keep pushing the parent node on the stack.
+				while(visited.find(param->group)==visited.end()
+					&& param->group!=Config::ParameterInfo::ID_INVALID)
+					{
+					auto ipm=idmap.find(param->group);
+					if(ipm==idmap.end())
+						{
+					//	Unknown group id
+						throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+						}
+	
+					++level_count;
+					param_stack.push({ipm->second,level_count});
+					param=ipm->second;
+					}
+				
+				while(param_stack.depth())
+					{
+					auto node=param_stack.pop();
+					auto param_create=node.first;
+					
+					level_count=node.second;
+					callback(*param_create,level_count);
+					visited.insert(param_create->id);
+					}					
+				}
+			++params;
+			}
+		}
+		
+	class DepthCount:public ParamTraverseCallback
+		{
+		public:
+			DepthCount():level_max(0){}
+			void operator()(const Config::ParameterInfo& param,size_t level)
+				{
+				if(level>level_max)
+					{level_max=level;}
+				}
+			
+			operator size_t() const	
+				{return level_max;}
+			
+		private:
+			size_t level_max;
+		};
+	
+	class InterfaceBuild:public ParamTraverseCallback
+		{
+		public:
+			InterfaceBuild(Config::InterfaceBuilder& builder,void* blob):
+				m_builder(builder),m_blob_address((char*)blob)
+				{}
+				
+			void operator()(const Config::ParameterInfo& param,size_t level)
+				{
+				createDispatch(m_blob_address,m_builder,param,level);
+				}
+	
+		private:
+			Config::InterfaceBuilder& m_builder;
+			char* m_blob_address;
+		};		
+	
 	}
 
 void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& builder)
 	{
 	auto si=params_in.setupinfoGet();
-		
+	
 //	Create look-up for parameter ID:s
-	std::map<uint32_t,const ParameterInfo*> pmap;	
-	auto params=si.param_info;
-	while(*params!=nullptr)
-		{
-		auto ip=pmap.insert({(*params)->id,*params});
-		if(!ip.second)
-			{
-		//	Duplicated ID
-			throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-			}
-		++params;
-		}
-		
-	std::set<uint32_t> visited;
-	Herbs::Stack<const ParameterInfo*> param_stack(16);
-	params=si.param_info;
-	while(*params!=nullptr)
-		{
-		auto param=*params;
-		if(visited.find(param->id)==visited.end())
-			{	
-			if(param->group==param->id)
-				{
-			//	Self-refering group
-				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-				}
-			param_stack.push(param);
-		
-		//	While parent not is not created, and we have not found the root node
-			while(visited.find(param->group)==visited.end()
-				&& param->group!=ParameterInfo::ID_INVALID)
-				{
-				auto ipm=pmap.find(param->group);
-				if(ipm==pmap.end())
-					{
-				//	Unknown group id
-					throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-					}
-				param_stack.push(ipm->second);
-				param=ipm->second;
-				}
-			
-			while(param_stack.depth())
-				{
-				auto param_create=param_stack.pop();
-				createDispatch((char*)si.blob_address
-					,builder,*param_create
-					,0);
-				visited.insert(param_create->id);
-				}
-				
-			}
-		++params;
-		}
+	auto idmap=mapIdCreate(si.param_info);	
+	
+	DepthCount depth_max;
+	traverse(si.param_info,idmap,depth_max,16);
+	
+	InterfaceBuild thebuilder(builder,si.blob_address);
+	traverse(si.param_info,idmap,thebuilder,depth_max);
+	
 	}

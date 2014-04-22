@@ -21,3 +21,6 @@ __wand_targets/*
 *.out
 *.app
 
+Doxyfile
+html
+latex
