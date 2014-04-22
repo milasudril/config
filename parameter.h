@@ -41,9 +41,9 @@ namespace Config
 		uint32_t data_offset;
 		
 		constexpr Parameter(const char_t* label_,uint32_t size_,uint32_t id_
-			,uint32_t group_,Mode mode,TypeData data_type_,uint32_t data_size_
+			,Mode mode,TypeData data_type_,uint32_t data_size_
 			,uint32_t data_offset_):
-			ParameterInfo(label_,size_,id_,group_,typeGet(mode))
+			ParameterInfo(label_,size_,id_,typeGet(mode))
 			,data_type(data_type_),data_size(data_size_),data_offset(data_offset_)
 			{}
 

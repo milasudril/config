@@ -42,18 +42,18 @@ namespace
 	}
 
 
-void Config::TestInterface::create(const Group& group,size_t level)
+void Config::TestInterface::create(const Group& group,uint32_t in_group)
 	{
 	print(Herbs::format(STR("Group: %0 \"%1\" (level %2)\n")
 		,
 		{
 		 Herbs::IntFormat<uint32_t>(group.id)
 		,group.label
-		,Herbs::IntFormat<size_t>(level)
+		,Herbs::IntFormat<uint32_t>(group.level)
 		}));
 	}
 
-void Config::TestInterface::create(const Value<int32_t>& value,int32_t& x)
+void Config::TestInterface::create(const Value<int32_t>& value,uint32_t in_group,int32_t& x)
 	{
 	print(Herbs::format(STR("Value<int32_t>: %0 \"%1\" (%2)\n")
 		,
@@ -64,7 +64,7 @@ void Config::TestInterface::create(const Value<int32_t>& value,int32_t& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Value<int64_t>& value,int64_t& x)
+void Config::TestInterface::create(const Value<int64_t>& value,uint32_t in_group,int64_t& x)
 	{
 	print(Herbs::format(STR("Value<int64_t>: %0 \"%1\" (%2)\n")
 		,
@@ -75,7 +75,7 @@ void Config::TestInterface::create(const Value<int64_t>& value,int64_t& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Range<int32_t>& range,int32_t& x)
+void Config::TestInterface::create(const Range<int32_t>& range,uint32_t in_group,int32_t& x)
 	{
 	print(Herbs::format(STR("Range<int32_t>: %0 \"%1\" [%3,%4](%2)\n")
 		,
@@ -88,7 +88,7 @@ void Config::TestInterface::create(const Range<int32_t>& range,int32_t& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Range<int64_t>& range,int64_t& x)
+void Config::TestInterface::create(const Range<int64_t>& range,uint32_t in_group,int64_t& x)
 	{
 	print(Herbs::format(STR("Range<int64_t>: %0 \"%1\" [%3,%4](%2)\n")
 		,
@@ -101,7 +101,7 @@ void Config::TestInterface::create(const Range<int64_t>& range,int64_t& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Value<uint32_t>& value,uint32_t& x)
+void Config::TestInterface::create(const Value<uint32_t>& value,uint32_t in_group,uint32_t& x)
 	{
 	print(Herbs::format(STR("Value<uint32_t>: %0 \"%1\" (%2)\n")
 		,
@@ -112,7 +112,7 @@ void Config::TestInterface::create(const Value<uint32_t>& value,uint32_t& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Value<uint64_t>& value,uint64_t& x)
+void Config::TestInterface::create(const Value<uint64_t>& value,uint32_t in_group,uint64_t& x)
 	{
 	print(Herbs::format(STR("Value<uint64_t>: %0 \"%1\" (%2)\n")
 		,
@@ -123,7 +123,7 @@ void Config::TestInterface::create(const Value<uint64_t>& value,uint64_t& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Range<uint32_t>& range,uint32_t& x)
+void Config::TestInterface::create(const Range<uint32_t>& range,uint32_t in_group,uint32_t& x)
 	{
 	print(Herbs::format(STR("Range<uint32_t>: %0 \"%1\" [%3,%4](%2)\n")
 		,
@@ -136,7 +136,7 @@ void Config::TestInterface::create(const Range<uint32_t>& range,uint32_t& x)
 		}));
 	}
 	
-void Config::TestInterface::create(const Range<uint64_t>& range,uint64_t& x)
+void Config::TestInterface::create(const Range<uint64_t>& range,uint32_t in_group,uint64_t& x)
 	{
 	print(Herbs::format(STR("Range<uint64_t>: %0 \"%1\" [%3,%4](%2)\n")
 		,
@@ -150,7 +150,7 @@ void Config::TestInterface::create(const Range<uint64_t>& range,uint64_t& x)
 	}
 
 
-void Config::TestInterface::create(const Value<float>& value,float& x)
+void Config::TestInterface::create(const Value<float>& value,uint32_t in_group,float& x)
 	{
 	print(Herbs::format(STR("Value<float>: %0 \"%1\" (%2)\n")
 		,
@@ -161,7 +161,7 @@ void Config::TestInterface::create(const Value<float>& value,float& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Value<double>& value,double& x)
+void Config::TestInterface::create(const Value<double>& value,uint32_t in_group,double& x)
 	{
 	print(Herbs::format(STR("Value<double>: %0 \"%1\" (%2)\n")
 		,
@@ -172,7 +172,7 @@ void Config::TestInterface::create(const Value<double>& value,double& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Range<float>& range,float& x)
+void Config::TestInterface::create(const Range<float>& range,uint32_t in_group,float& x)
 	{
 	print(Herbs::format(STR("Range<float>: %0 \"%1\" [%3,%4](%2)\n")
 		,
@@ -185,7 +185,7 @@ void Config::TestInterface::create(const Range<float>& range,float& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Range<double>& range,double& x)
+void Config::TestInterface::create(const Range<double>& range,uint32_t in_group,double& x)
 	{
 	print(Herbs::format(STR("Range<double>: %0 \"%1\" [%3,%4](%2)\n")
 		,
@@ -199,7 +199,7 @@ void Config::TestInterface::create(const Range<double>& range,double& x)
 	}
 
 	
-void Config::TestInterface::create(const NameListed& namelist,uint32_t& x)
+void Config::TestInterface::create(const NameListed& namelist,uint32_t in_group,uint32_t& x)
 	{
 	print(Herbs::format(STR("NameListed: %0 \"%1\" (%2 \"%3\")\n")
 		,
@@ -212,7 +212,7 @@ void Config::TestInterface::create(const NameListed& namelist,uint32_t& x)
 	}
 
 
-void Config::TestInterface::create(const FlagGroup& group,uint32_t& x)
+void Config::TestInterface::create(const FlagGroup& group,uint32_t in_group,uint32_t& x)
 	{
 	print(Herbs::format(STR("FlagGroup: %0 \"%1\" (%2)\n")
 		,
@@ -223,7 +223,7 @@ void Config::TestInterface::create(const FlagGroup& group,uint32_t& x)
 		}));
 	}
 
-void Config::TestInterface::create(const String& string,Herbs::String& x)
+void Config::TestInterface::create(const String& string,uint32_t in_group,Herbs::String& x)
 	{
 	print(Herbs::format(STR("String: %0 \"%1\" (\"%2\")\n")
 		,
@@ -234,7 +234,7 @@ void Config::TestInterface::create(const String& string,Herbs::String& x)
 		}));
 	}
 
-void Config::TestInterface::create(const Path& path,Herbs::Path& x)
+void Config::TestInterface::create(const Path& path,uint32_t in_group,Herbs::Path& x)
 	{
 	print(Herbs::format(STR("path: %0 \"%1\" (\"%2\")\n")
 		,
@@ -245,7 +245,7 @@ void Config::TestInterface::create(const Path& path,Herbs::Path& x)
 		}));
 	}
 
-void Config::TestInterface::create(const DateTime& date,Herbs::Timestamp& x)
+void Config::TestInterface::create(const DateTime& date,uint32_t in_group,Herbs::Timestamp& x)
 	{
 	print(Herbs::format(STR("path: %0 \"%1\" (%2-%3-%4 %5:%6:%7)\n")
 		,

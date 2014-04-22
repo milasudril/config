@@ -56,7 +56,8 @@ namespace
 	
 	void createDispatch(char* ptr_data
 		,Config::InterfaceBuilder& builder
-		,const Config::Parameter& param)
+		,const Config::Parameter& param
+		,uint32_t group_current)
 		{
 		using namespace Config;
 		ptr_data+=param.data_offset;
@@ -68,11 +69,11 @@ namespace
 					{
 					case 4:
 						builder.create(downcast<Value<int32_t> >(param)
-							,*(int32_t*)ptr_data);
+							,group_current,*(int32_t*)ptr_data);
 						break;
 					case 8:
 						builder.create(downcast<Value<int64_t> >(param)
-							,*(int64_t*)ptr_data);
+							,group_current,*(int64_t*)ptr_data);
 						break;
 					default:
 					//	Bad data size for type
@@ -84,11 +85,11 @@ namespace
 					{
 					case 4:
 						builder.create(downcast<Range<int32_t> >(param) 
-							,*(int32_t*)ptr_data);
+							,group_current,*(int32_t*)ptr_data);
 						break;
 					case 8:
 						builder.create(downcast<Range<int64_t> >(param)
-							,*(int64_t*)ptr_data);
+							,group_current,*(int64_t*)ptr_data);
 						break;
 					default:
 					//	Bad data size for type
@@ -101,11 +102,11 @@ namespace
 					{
 					case 4:
 						builder.create(downcast<Value<uint32_t> >(param)
-							,*(uint32_t*)ptr_data);
+							,group_current,*(uint32_t*)ptr_data);
 						break;
 					case 8:
 						builder.create(downcast<Value<uint64_t> >(param)
-							,*(uint64_t*)ptr_data);
+							,group_current,*(uint64_t*)ptr_data);
 						break;
 					default:
 					//	Bad data size for type
@@ -118,11 +119,11 @@ namespace
 					{
 					case 4:
 						builder.create(downcast<Range<uint32_t> >(param)
-							,*(uint32_t*)ptr_data);
+							,group_current,*(uint32_t*)ptr_data);
 						break;
 					case 8:
 						builder.create(downcast<Range<uint64_t> >(param)
-							,*(uint64_t*)ptr_data);
+							,group_current,*(uint64_t*)ptr_data);
 						break;
 					default:
 					//	Bad data size for type
@@ -135,11 +136,11 @@ namespace
 					{
 					case 4:
 						builder.create(downcast<Value<float> >(param)
-							,*(float*)ptr_data);
+							,group_current,*(float*)ptr_data);
 						break;
 					case 8:
 						builder.create(downcast<Value<double> >(param)
-							,*(double*)ptr_data);
+							,group_current,*(double*)ptr_data);
 						break;
 					default:
 					//	Bad data size for type
@@ -152,11 +153,11 @@ namespace
 					{
 					case 4:
 						builder.create(downcast<Range<float> >(param)
-							,*(float*)ptr_data);
+							,group_current,*(float*)ptr_data);
 						break;
 					case 8:
 						builder.create(downcast<Range<double> >(param)
-							,*(double*)ptr_data);
+							,group_current,*(double*)ptr_data);
 						break;
 					default:
 					//	Bad data size for type
@@ -165,23 +166,23 @@ namespace
 				break;
 				
 			case Parameter::TypeData::NAME_LISTED:
-				builder.create(downcast<NameListed>(param),*(uint32_t*)ptr_data);
+				builder.create(downcast<NameListed>(param),group_current,*(uint32_t*)ptr_data);
 				break;
 			
 			case Parameter::TypeData::FLAGGROUP:
-				builder.create(downcast<FlagGroup>(param),*(uint32_t*)ptr_data);
+				builder.create(downcast<FlagGroup>(param),group_current,*(uint32_t*)ptr_data);
 				break;
 			
 			case Parameter::TypeData::STRING:
-				builder.create(downcast<String>(param),*(Herbs::String*)ptr_data);
+				builder.create(downcast<String>(param),group_current,*(Herbs::String*)ptr_data);
 				break;
 			
 			case Parameter::TypeData::PATH:
-				builder.create(downcast<Path>(param),*(Herbs::Path*)ptr_data);
+				builder.create(downcast<Path>(param),group_current,*(Herbs::Path*)ptr_data);
 				break;
 			
 			case Parameter::TypeData::DATETIME:
-				builder.create(downcast<DateTime>(param),*(Herbs::Timestamp*)ptr_data);
+				builder.create(downcast<DateTime>(param),group_current,*(Herbs::Timestamp*)ptr_data);
 				break;
 
 			default:
@@ -190,87 +191,75 @@ namespace
 			}
 		}
 	
-	void createDispatch(char* ptr_data
-		,Config::InterfaceBuilder& builder
-		,const Config::ParameterInfo& obj
-		,size_t depth)
-		{
-		using namespace Config;
-		
-		switch(obj.type)
-			{
-			case ParameterInfo::Type::GROUP:
-				builder.create(downcast<Group>(obj),depth);
-				break;
-					
-			case ParameterInfo::Type::PARAM_INPUT:
-			case ParameterInfo::Type::STATUS_INDICATOR:
-				createDispatch(ptr_data,builder,downcast<Parameter>(obj));
-				break;
-			default:
-			//	Unknown type
-				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-			}
-		}
+
+	
 	}
 
 void Config::interfaceCreate(const ParamCollector& params_in,InterfaceBuilder& builder)
 	{
 	auto si=params_in.setupinfoGet();
-		
-//	Create look-up for parameter ID:s
-	std::map<uint32_t,const ParameterInfo*> pmap;	
-	auto params=si.param_info;
-	while(*params!=nullptr)
+	size_t group_level=0;
+	Herbs::Stack<std::pair<uint32_t,uint32_t> > group_ids(16);
+	uint32_t group_current=ParameterInfo::ID_INVALID;
+	auto param=si.param_info;
+	auto ptr_data=si.blob_address;
+	while(*param!=nullptr)
 		{
-		auto ip=pmap.insert({(*params)->id,*params});
-		if(!ip.second)
+		auto obj=*param;
+		switch(obj->type)
 			{
-		//	Duplicated ID
-			throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-			}
-		++params;
-		}
-		
-	std::set<uint32_t> visited;
-	Herbs::Stack<const ParameterInfo*> param_stack(16);
-	params=si.param_info;
-	while(*params!=nullptr)
-		{
-		auto param=*params;
-		if(visited.find(param->id)==visited.end())
-			{	
-			if(param->group==param->id)
+			case ParameterInfo::Type::GROUP:
 				{
-			//	Self-refering group
-				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
-				}
-			param_stack.push(param);
-		
-		//	While parent not is not created, and we have not found the root node
-			while(visited.find(param->group)==visited.end()
-				&& param->group!=ParameterInfo::ID_INVALID)
-				{
-				auto ipm=pmap.find(param->group);
-				if(ipm==pmap.end())
+				const Group& group=downcast<Group>(*obj);
+				if(group.level==group_level)
 					{
-				//	Unknown group id
-					throw Herbs::ExceptionMissing(___FILE__,__LINE__);
+					group_ids.push({group_current,group_level});
+					printf("group_current=%u\n",group_current);
+					builder.create(group,group_current);
+					group_current=group.id;
 					}
-				param_stack.push(ipm->second);
-				param=ipm->second;
+				else
+					{
+					if(group.level > group_level)
+						{
+						group_ids.push({group_current,group_level});
+						printf("group_current=%u\n",group_current);
+						builder.create(group,group_current);
+						group_current=group.id;
+						group_level=group.level;
+						}
+		
+					if(group.level < group_level)
+						{
+						std::pair<uint32_t,uint32_t> node;
+						while(group_ids.depth())
+							{
+							node=group_ids.pop();
+							if(node.second<group.level)
+								{break;}
+							}
+						group_current=node.first;
+						group_ids.push(node);
+						printf("group_current=%u\n",group_current);
+						builder.create(group,group_current);
+						group_current=group.id;
+						group_level=group.level;
+						}
+					}
 				}
-			
-			while(param_stack.depth())
-				{
-				auto param_create=param_stack.pop();
-				createDispatch((char*)si.blob_address
-					,builder,*param_create
-					,0);
-				visited.insert(param_create->id);
-				}
-				
+				break;
+					
+			case ParameterInfo::Type::PARAM_INPUT:
+			case ParameterInfo::Type::STATUS_INDICATOR:
+				printf("group_current=%u\n",group_current);
+				createDispatch((char*)ptr_data,builder,downcast<Parameter>(*obj),group_current);
+				break;
+			default:
+			//	Unknown type
+				throw Herbs::ExceptionMissing(___FILE__,__LINE__);
 			}
-		++params;
+		putchar('\n');
+		++param;
 		}
+	
 	}

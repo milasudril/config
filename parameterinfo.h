@@ -24,12 +24,11 @@ namespace Config
 		const char_t* label;
 		uint32_t size; /**<The size of the entire object.*/
 		uint32_t id;
-		uint32_t group;
 		Type type;
 		
 		constexpr ParameterInfo(const char_t* label_,uint32_t size_
-			,uint32_t id_,uint32_t group_,Type type_):
-			label(label_),size(size_),id(id_),group(group_),type(type_)
+			,uint32_t id_,Type type_):
+			label(label_),size(size_),id(id_),type(type_)
 			{}
 		};
 	}

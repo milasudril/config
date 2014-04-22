@@ -11,9 +11,10 @@ namespace Config
 	{
 	struct Group final:public ParameterInfo
 		{
-		constexpr Group(const char_t* label_,uint32_t id_,uint32_t group_):
-			ParameterInfo(label_,sizeof(*this),id_,group_,Type::GROUP)
+		constexpr Group(const char_t* label_,uint32_t id_,uint32_t level_):
+			ParameterInfo(label_,sizeof(*this),id_,Type::GROUP),level(level_)
 			{}
+		uint32_t level;
 		};
 	};
 
