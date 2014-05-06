@@ -14,6 +14,12 @@ namespace Config
 	class ParamObj
 		{
 		public:
+			struct Baseinfo
+				{
+				const char_t* name;
+				uint16_t id;
+				};		
+			
 			ParamObj(const Herbs::String& name,const ParamObj& group,uint16_t id);
 			
 			const Herbs::String nameGet() const

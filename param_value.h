@@ -19,6 +19,13 @@ namespace Config
 	class ParamValue:public ParamObj
 		{
 		public:
+			struct Baseinfo
+				{
+				ParamObj::Baseinfo baseinfo;
+				T* value_ptr;
+				ValueMap<T>* val_map;
+				};	
+			
 			ParamValue(const Herbs::String& name,const ParamObj& group,uint16_t id
 				,T& value,ValueMap<T>& val_map):
 				ParamObj(name,group,id),m_value(value),m_val_map(val_map)

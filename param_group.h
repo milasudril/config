@@ -15,6 +15,13 @@ namespace Config
 	class ParamGroup:public ParamObj
 		{
 		public:
+			struct Baseinfo
+				{
+				ParamObj::Baseinfo baseinfo;
+				uint16_t level;
+				};				
+			
+			
 			ParamGroup(const Herbs::String& name,const ParamObj& group,uint16_t id
 				,uint16_t level):
 				ParamObj(name,group,id),m_level(level)
