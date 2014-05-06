@@ -10,7 +10,11 @@ namespace Config
 	class ParamObj
 		{
 		public:
-			virtual void valueUpdate(
+			ParamObj(const Herbs::String& name):m_name(value){}
+			virtual void valueUpdate(const void* ptr_val_new)=0;
+			
+		private:
+			Herbs::String m_name;
 		};
 	}
 

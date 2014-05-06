@@ -10,9 +10,12 @@ target[name[paramset.h] type[include]]
 
 namespace Config
 	{
+	struct ParamInfo;
+	
 	class ParamSet
 		{
 		public:
+			ParamSet(const ParamInfo* const* params);
 			ParamObj& paramFromIdGet(uint16_t param_id);
 		
 		private:

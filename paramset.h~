@@ -6,12 +6,16 @@ target[name[paramset.h] type[include]]
 #define CONFIG_PARAMSET_H
 
 #include "paramobj.h"
+#include <map>
 
 namespace Config
 	{
+	struct ParamInfo;
+	
 	class ParamSet
 		{
 		public:
+			ParamSet(const ParamInfo* params const*);
 			ParamObj& paramFromIdGet(uint16_t param_id);
 		
 		private:
