@@ -11,16 +11,10 @@ namespace Config
 	{
 	class UIProvider;
 
-	class ParamObj
+	class Paramobj
 		{
-		public:
-			struct Baseinfo
-				{
-				const char_t* name;
-				uint16_t id;
-				};		
-			
-			ParamObj(const Herbs::String& name,const ParamObj& group,uint16_t id);
+		public:			
+			Paramobj(const Herbs::String& name,const Paramobj& group,uint16_t id);
 			
 			const Herbs::String nameGet() const
 				{return m_name;}
@@ -36,7 +30,7 @@ namespace Config
 			
 		private:
 			Herbs::String m_name;
-			const ParamObj& m_group;
+			const Paramobj& m_group;
 			uint16_t m_id;
 		};
 	}

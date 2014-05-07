@@ -25,7 +25,7 @@ namespace Config
 					
 			ParamGroup(const Herbs::String& name,const ParamObj& group,uint16_t id
 				,uint16_t level):
-				Paramobj(name,group,id),m_level(level)
+				ParamObj(name,group,id),m_level(level)
 				{}
 			
 			void controlCreate(UIProvider& ui);

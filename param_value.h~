@@ -28,7 +28,7 @@ namespace Config
 							
 			ParamValue(const Herbs::String& name,const Paramobj& group,uint16_t id
 				,T& value,ValueMap<T>& val_map):
-				ParamO´obj(name,group,id),m_value(value),m_val_map(val_map)
+				ParamObj(name,group,id),m_value(value),m_val_map(val_map)
 				{}
 			
 			virtual void valueUpdate(const void* ptr_val_new)

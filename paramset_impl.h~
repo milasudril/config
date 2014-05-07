@@ -11,7 +11,7 @@ dependency[paramset_impl.o]
 namespace Config
 	{
 	struct Paraminfo;
-	class Paramobj;
+	class ParamObj;
 	
 	class ParamsetImpl:public Paramset
 		{
