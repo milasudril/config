@@ -7,6 +7,7 @@ dependency[param_group.o]
 #define CONFIG_PARAM_GROUP_H
 
 #include "paramobj.h"
+#include "param_group_info.h"
 
 namespace Config
 	{
@@ -15,17 +16,10 @@ namespace Config
 	class ParamGroup:public Paramobj
 		{
 		public:
-		/*
-			struct Baseinfo
-				{
-				const char_t* name;
-				uint32_t type;
-				uint16_t id;
-				};	*/
 					
-			ParamGroup(const Herbs::String& name,const ParamObj& group,uint16_t id
+			ParamGroup(const Herbs::String& name,const Paramobj& group,uint16_t id
 				,uint16_t level):
-				ParamObj(name,group,id),m_level(level)
+				Paramobj(name,group,id),m_level(level)
 				{}
 			
 			void controlCreate(UIProvider& ui);
