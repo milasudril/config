@@ -9,7 +9,7 @@ namespace Config
 	{
 	struct Paraminfo
 		{
-		enum Type:class uint32_t
+		enum class Type:uint32_t
 			{
 			 INT32
 			,INT64
@@ -24,14 +24,14 @@ namespace Config
 			};
 		
 		template<class T>
-		class IdType;
+		class TypeId;
 		
-		Paraminfo(const char_t* name,Type type,uint16_t id):
+		Paraminfo(const char_t* name,Type type,uint32_t id):
 			m_name(name),m_type(type),m_id(id){}
 			
 		const char_t* m_name;
-		uint32_t m_type;
-		uint16_t m_id;
+		Type m_type;
+		uint32_t m_id;
 		};
 	}
 				

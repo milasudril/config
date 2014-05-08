@@ -10,22 +10,25 @@ target[name[paramobj.h] type[include]]
 namespace Config
 	{
 	class UIProvider;
+	class Paraminfo;
 
 	class Paramobj
 		{
-		public:			
-			Paramobj(const Herbs::String& name,const Paramobj& group,uint16_t id);
+		public:
+			typedef Paramobj* (*Factory)(const Paraminfo& pi,const Paramobj& group);
+			
+			Paramobj(const Paraminfo& pi,const Paramobj& group);
 			
 			const Herbs::String nameGet() const
 				{return m_name;}
 			
-			const ParamObj& groupGet() const
+			const Paramobj& groupGet() const
 				{return m_group;}
 			
 			uint16_t idGet() const
 				{return m_id;}
 			
-			virtual void valueUpdate(const void* ptr_val_new){};
+			virtual void valueUpdate(const void* ptr_val_new)=0;
 			virtual void controlCreate(UIProvider& ui)=0;
 			
 		private:

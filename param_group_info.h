@@ -11,10 +11,10 @@ namespace Config
 	{		
 	struct ParamGroupInfo:public Paraminfo
 		{
-		ParamGroupInfo(const char_t* name,uint16_t id,uint16_t level):
-			ParamobjInfo(name,Paraminfo::Type::GROUP,id),m_level(level){}
+		ParamGroupInfo(const char_t* name,uint32_t id,uint32_t level):
+			Paraminfo(name,Paraminfo::Type::GROUP,id),m_level(level){}
 
-		uint16_t m_level;
+		uint32_t m_level;
 		};
 	}
 	

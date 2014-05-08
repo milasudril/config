@@ -9,3 +9,7 @@ void Config::ParamGroup::controlCreate(UIProvider& ui)
 	{
 	ui.create(*this);
 	}
+
+void Config::ParamGroup::valueUpdate(const void* ptr_val_new)
+	{}
+

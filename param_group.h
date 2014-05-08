@@ -13,20 +13,21 @@ namespace Config
 	{
 	class ParamGroup:public Paramobj
 		{
-		public:
-					
-			ParamGroup(const Herbs::String& name,const Paramobj& group,uint16_t id
-				,uint16_t level):
-				Paramobj(name,group,id),m_level(level)
+		public:		
+			ParamGroup(const Paraminfo& info,const Paramobj& group):
+				Paramobj(info,group)
+				,m_level( ((const ParamGroupInfo&)info).m_level )
 				{}
+			
+			void valueUpdate(const void* ptr_val_new);
 			
 			void controlCreate(UIProvider& ui);
 
-			uint16_t levelGet() const
+			uint32_t levelGet() const
 				{return m_level;}
 			
 		private:
-			uint16_t m_level;
+			uint32_t m_level;
 		};
 	}
 	
