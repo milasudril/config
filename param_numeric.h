@@ -14,19 +14,22 @@ namespace Config
 	class ParamNumeric:public ParamValue<T>
 		{
 		public:
-			ParamNumeric(const Paraminfo& info,const Paramobj& group):
+			static Paramobj* create(const Paraminfo& info,Paramobj* group)
+				{return new ParamNumeric(info,group);}
+			
+			ParamNumeric(const Paraminfo& info,Paramobj* group):
 				ParamValue<T>(info,group)
-				,m_update_method( ((const ParamNumericInfo&)info).m_pref_update_method )
+				,m_update_method( ((const ParamNumericInfo<T>&)info).m_pref_update_method )
 				{}
 			
-			ParamNumericInfo::UpdateMethod updateMethodGet() const
+			typename ParamNumericInfo<T>::UpdateMethod updateMethodGet() const
 				{return m_update_method;}
 			
 			virtual void controlCreate(UIProvider& ui)
 				{ui.create(*this);}
 				
 		private:
-			ParamNumericInfo::UpdateMethod m_update_method;
+			typename ParamNumericInfo<T>::UpdateMethod m_update_method;
 		};
 	}
 

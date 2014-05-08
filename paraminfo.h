@@ -5,22 +5,27 @@ target[name[paraminfo.h] type[include]]
 #ifndef CONFIG_PARAMINFO_H
 #define CONFIG_PARAMINFO_H
 
+#include <herbs/chartype/chartype.h>
+
 namespace Config
 	{
 	struct Paraminfo
 		{
 		enum class Type:uint32_t
 			{
-			 INT32
+			 GROUP
+			,INT32
 			,INT64
+			,UINT32
+			,UINT64
+			,INT_NAMED
 			,FLOAT
 			,DOUBLE
 			,TIMESTAMP
-			,GROUP
+			,FLAGSET
 			,STRING
 			,PATH
-			,UINT32
-			,UINT64
+			,ID_MAX
 			};
 		
 		template<class T>

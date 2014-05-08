@@ -7,13 +7,20 @@ target[name[uiprovider.h] type[include]]
 
 namespace Config
 	{
-	class ParamValueInt32;
+	template<class T>
+	class ParamNumeric;
+	
 	class ParamGroup;
 	
 	class UIProvider
 		{
 		public:
-			virtual void create(ParamValueInt32& param)=0;
+			virtual void create(ParamNumeric<int32_t>& param)=0;
+			virtual void create(ParamNumeric<int64_t>& param)=0;
+			virtual void create(ParamNumeric<uint32_t>& param)=0;
+			virtual void create(ParamNumeric<uint64_t>& param)=0;
+			virtual void create(ParamNumeric<float>& param)=0;
+			virtual void create(ParamNumeric<double>& param)=0;
 			virtual void create(ParamGroup& group)=0;
 			
 		};

@@ -15,26 +15,25 @@ namespace Config
 	class Paramobj
 		{
 		public:
-			typedef Paramobj* (*Factory)(const Paraminfo& pi,const Paramobj& group);
+			typedef Paramobj* (*Factory)(const Paraminfo& pi,Paramobj* group);
 			
-			Paramobj(const Paraminfo& pi,const Paramobj& group);
+			Paramobj(const Paraminfo& pi,Paramobj* group);
 			
-			const Herbs::String nameGet() const
+			const Herbs::String& nameGet() const
 				{return m_name;}
 			
-			const Paramobj& groupGet() const
+			Paramobj* groupGet()
 				{return m_group;}
 			
-			uint16_t idGet() const
+			uint32_t idGet() const
 				{return m_id;}
-			
-			virtual void valueUpdate(const void* ptr_val_new)=0;
+
 			virtual void controlCreate(UIProvider& ui)=0;
 			
 		private:
 			Herbs::String m_name;
-			const Paramobj& m_group;
-			uint16_t m_id;
+			Paramobj* m_group;
+			uint32_t m_id;
 		};
 	}
 

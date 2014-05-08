@@ -3,9 +3,10 @@ target[name[paramset_impl.h] type[include]]
 dependency[paramset_impl.o]
 #endif
 
-#ifndef CONFIG_PARAMSET_H
-#define CONFIG_PARAMSET_H
+#ifndef CONFIG_PARAMSET_IMPL_H
+#define CONFIG_PARAMSET_IMPL_H
 
+#include "paramset.h"
 #include <map>
 
 namespace Config
@@ -16,11 +17,11 @@ namespace Config
 	class ParamsetImpl:public Paramset
 		{
 		public:
-			ParamSet(const Paraminfo* const* params);
-			ParamObj& paramFromIdGet(uint16_t param_id);
+			ParamsetImpl(const Paraminfo* const* params);
+			Paramobj& paramFromIdGet(uint32_t param_id);
 		
 		private:
-			std::map<uint16_t,ParamObj*> parameters;
+			std::map<uint32_t,Paramobj*> parameters;
 		};
 	}
 

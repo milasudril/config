@@ -20,12 +20,12 @@ namespace Config
 		{
 		ParamValueInfo(const char_t* name,uint32_t id
 			,T& value,Herbs::ValueMap<T>& val_map):
-			ParamobjInfo(name,Paraminfo::TypeId<T>::value,id)
+			Paraminfo(name,Paraminfo::TypeId<T>::value,id)
 				,m_value(value),m_val_map(val_map){}
 				
 		T& m_value;
-		ValueMap<T>& val_map;				
-		}
+		Herbs::ValueMap<T>& m_val_map;				
+		};
 	}
 	
 #endif

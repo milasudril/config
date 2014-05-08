@@ -10,6 +10,5 @@ void Config::ParamGroup::controlCreate(UIProvider& ui)
 	ui.create(*this);
 	}
 
-void Config::ParamGroup::valueUpdate(const void* ptr_val_new)
-	{}
-
+Config::Paramobj* Config::ParamGroup::create(const Paraminfo& info,Paramobj* group)
+	{return new ParamGroup(info,group);}

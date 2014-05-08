@@ -13,13 +13,13 @@ namespace Config
 	{
 	class ParamGroup:public Paramobj
 		{
-		public:		
-			ParamGroup(const Paraminfo& info,const Paramobj& group):
+		public:
+			static Paramobj* create(const Paraminfo& info,Paramobj* group);
+			
+			ParamGroup(const Paraminfo& info,Paramobj* group):
 				Paramobj(info,group)
 				,m_level( ((const ParamGroupInfo&)info).m_level )
 				{}
-			
-			void valueUpdate(const void* ptr_val_new);
 			
 			void controlCreate(UIProvider& ui);
 
