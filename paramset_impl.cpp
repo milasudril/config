@@ -9,6 +9,8 @@ target[name[paramset_impl.o] type[object]]
 #include "param_group.h"
 #include "param_numeric.h"
 
+#include <herbs/stack/stack.h>
+
 namespace
 	{
 	using namespace Config;
@@ -24,11 +26,13 @@ namespace
 				factories[(uint32_t)Paraminfo::Type::UINT32]=ParamNumeric<uint32_t>::create;
 				factories[(uint32_t)Paraminfo::Type::UINT32]=ParamNumeric<uint64_t>::create;
 				factories[(uint32_t)Paraminfo::Type::FLOAT]=ParamNumeric<float>::create;
-				factories[(uint32_t)Paraminfo::Type::FLOAT]=ParamNumeric<double>::create;
+				factories[(uint32_t)Paraminfo::Type::DOUBLE]=ParamNumeric<double>::create;
+			
+			//	TODO: Contiue fill in
 				}
-		
-			Paramobj::Factory operator[](Paraminfo::Type type) const
-				{return factories[(uint32_t)type];}
+				
+			Paramobj* create(const Paraminfo& info,Paramobj* group) const
+				{return factories[(uint32_t)info.m_type](info,group);}
 		
 		private:
 			Paramobj::Factory factories[(uint32_t)Paraminfo::Type::ID_MAX];
@@ -40,10 +44,66 @@ namespace
 
 Config::ParamsetImpl::ParamsetImpl(const Paraminfo* const* params)
 	{
+	Herbs::Stack<ParamGroup*> nodes;
+	ParamGroupInfo root={STR("Parametrar"),0,0};
+
+	ParamGroup* group_current=new ParamGroup(root,nullptr);
+	nodes.push(group_current);
+	m_params.append(group_current);
+	
 	while(*params!=nullptr)
 		{
-		
+		auto objinfo=*params;
+		switch(objinfo->m_type)
+			{
+			case Paraminfo::Type::GROUP:
+				{
+				const ParamGroupInfo& g=(const ParamGroupInfo&)(*objinfo);
+				const auto level_current=group_current->levelGet();
+				if(g.m_level>level_current)
+					{
+					nodes.push(group_current);
+					group_current=new ParamGroup(*objinfo,group_current);
+					m_params.append(group_current);
+					}			
+				else
+					{
+					while(nodes.depth())
+						{
+						group_current=nodes.pop();
+						if(group_current->levelGet() < g.m_level)
+							{break;}
+						}
+					group_current=new ParamGroup(*objinfo,group_current);
+					m_params.append(group_current);
+					}
+				}
+				break;
+				
+			default:
+				m_params.append(factory_table.create(*objinfo,group_current));
+			}
 		++params;
 		}
 	}
 
+void Config::ParamsetImpl::uiCreate(UIProvider& ui) const
+	{
+	auto param=m_params.begin();
+	while(param!=m_params.end())
+		{
+		(*param)->controlCreate(ui);
+		++param;
+		}
+	}
+
+Config::ParamsetImpl::~ParamsetImpl()
+	{
+	auto param=m_params.begin();
+	while(param!=m_params.end())
+		{
+		delete *param;
+		++param;
+		}
+	}
+	

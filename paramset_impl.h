@@ -7,7 +7,7 @@ dependency[paramset_impl.o]
 #define CONFIG_PARAMSET_IMPL_H
 
 #include "paramset.h"
-#include <map>
+#include <herbs/array/array.h>
 
 namespace Config
 	{
@@ -18,10 +18,11 @@ namespace Config
 		{
 		public:
 			ParamsetImpl(const Paraminfo* const* params);
-			Paramobj& paramFromIdGet(uint32_t param_id);
+			~ParamsetImpl();
+			void uiCreate(UIProvider& ui) const;
 		
 		private:
-			std::map<uint32_t,Paramobj*> parameters;
+			Herbs::Array<Paramobj*> m_params;
 		};
 	}
 

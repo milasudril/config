@@ -5,17 +5,15 @@ target[name[paramset.h] type[include]]
 #ifndef CONFIG_PARAMSET_H
 #define CONFIG_PARAMSET_H
 
-#include <map>
 
 namespace Config
 	{
-	struct ParamInfo;
-	class ParamObj;
+	class UIProvider;
 	
 	class Paramset
 		{
 		public:
-			virtual const ParamObj& paramFromIdGet(uint16_t param_id)=0;
+			virtual void uiCreate(UIProvider& ui) const=0;
 		};
 	}
 

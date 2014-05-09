@@ -29,6 +29,7 @@ namespace Config
 				{return m_id;}
 
 			virtual void controlCreate(UIProvider& ui)=0;
+			virtual ~Paramobj(){}
 			
 		private:
 			Herbs::String m_name;
