@@ -1,5 +1,5 @@
 #ifdef __WAND__
-target[name[paraminfo.o] type[object]]
+target[name[paramobj.o] type[object]]
 #endif
 
 #include "paramobj.h"

@@ -1,5 +1,6 @@
 #ifdef __WAND__
 target[name[paramobj.h] type[include]]
+dependency[paramobj.o]
 #endif
 
 #ifndef CONFIG_PARAMOBJ_H

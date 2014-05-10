@@ -30,8 +30,10 @@ namespace Config
 		static constexpr Paraminfo::Type typeId();
 		
 		ParamValuemappedInfo(const char_t* name,uint32_t id
-			,T& value,Herbs::ValueMap<T>& val_map):
-			ParamValueInfo<T>(name,typeId(),id,value)
+			,T& value
+			,typename ParamValueInfo<T>::UpdateMethod update_method
+			,Herbs::ValueMap<T>& val_map):
+			ParamValueInfo<T>(name,typeId(),id,value,update_method)
 				,m_val_map(val_map){}
 
 		Herbs::ValueMap<T>& m_val_map;				
