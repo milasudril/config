@@ -14,9 +14,9 @@ namespace Config
 	class ParamGroup:public Paramobj
 		{
 		public:
-			static Paramobj* create(const Paraminfo& info,Paramobj* group);
+			static Paramobj* create(const Paraminfo& info,ParamGroup* group);
 			
-			ParamGroup(const Paraminfo& info,Paramobj* group):
+			ParamGroup(const Paraminfo& info,ParamGroup* group):
 				Paramobj(info,group)
 				,m_level( ((const ParamGroupInfo&)info).m_level )
 				{}

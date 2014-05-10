@@ -38,7 +38,7 @@ namespace
 				factories[(uint32_t)Paraminfo::Type::PATH]=ParamValuemapped<Herbs::Path>::create;
 				}
 				
-			Paramobj* create(const Paraminfo& info,Paramobj* group) const
+			Paramobj* create(const Paraminfo& info,ParamGroup* group) const
 				{return factories[(uint32_t)info.m_type](info,group);}
 		
 		private:

@@ -13,10 +13,10 @@ namespace Config
 	class ParamIntnamed:public ParamIntannotated<T>
 		{
 		public:
-			static Paramobj* create(const Paraminfo& info,Paramobj* group)
+			static Paramobj* create(const Paraminfo& info,ParamGroup* group)
 				{return new ParamIntnamed(info,group);}
 		
-			ParamIntnamed(const Paraminfo& info,Paramobj* group):
+			ParamIntnamed(const Paraminfo& info,ParamGroup* group):
 				ParamIntannotated<T>(info,group){}
 				
 			void controlCreate(UIProvider& ui)

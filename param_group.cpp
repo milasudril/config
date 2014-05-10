@@ -10,5 +10,5 @@ void Config::ParamGroup::controlCreate(UIProvider& ui)
 	ui.create(*this);
 	}
 
-Config::Paramobj* Config::ParamGroup::create(const Paraminfo& info,Paramobj* group)
+Config::Paramobj* Config::ParamGroup::create(const Paraminfo& info,ParamGroup* group)
 	{return new ParamGroup(info,group);}

@@ -12,18 +12,19 @@ namespace Config
 	{
 	class UIProvider;
 	class Paraminfo;
+	class ParamGroup;
 
 	class Paramobj
 		{
 		public:
-			typedef Paramobj* (*Factory)(const Paraminfo& pi,Paramobj* group);
+			typedef Paramobj* (*Factory)(const Paraminfo& pi,ParamGroup* group);
 			
-			Paramobj(const Paraminfo& pi,Paramobj* group);
+			Paramobj(const Paraminfo& pi,ParamGroup* group);
 			
 			const Herbs::String& nameGet() const
 				{return m_name;}
 			
-			Paramobj* groupGet()
+			ParamGroup* groupGet()
 				{return m_group;}
 			
 			uint32_t idGet() const
@@ -34,7 +35,7 @@ namespace Config
 			
 		private:
 			Herbs::String m_name;
-			Paramobj* m_group;
+			ParamGroup* m_group;
 			uint32_t m_id;
 		};
 	}

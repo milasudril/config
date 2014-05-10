@@ -5,6 +5,9 @@ target[name[uiprovider.h] type[include]]
 #ifndef CONFIG_UIPROVIDER_H
 #define CONFIG_UIPROVIDER_H
 
+#include <cstdint>
+#include <herbs/chartype/chartype.h>
+
 namespace Herbs
 	{
 	template<class T>

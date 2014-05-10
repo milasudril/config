@@ -21,10 +21,10 @@ namespace Config
 	class ParamValuemapped:public ParamValue<T>
 		{
 		public:
-			static Paramobj* create(const Paraminfo& info,Paramobj* group)
+			static Paramobj* create(const Paraminfo& info,ParamGroup* group)
 				{return new ParamValuemapped(info,group);}
 		
-			ParamValuemapped(const Paraminfo& info,Paramobj* group):
+			ParamValuemapped(const Paraminfo& info,ParamGroup* group):
 				ParamValue<T>(info,group)
 				,m_val_map( ((const ParamValuemappedInfo<T>&)info).m_val_map )
 				{}

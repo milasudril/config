@@ -5,7 +5,7 @@ target[name[paramobj.o] type[object]]
 #include "paramobj.h"
 #include "paraminfo.h"
 
-Config::Paramobj::Paramobj(const Paraminfo& pi,Paramobj* group):
+Config::Paramobj::Paramobj(const Paraminfo& pi,ParamGroup* group):
 	m_name(pi.m_name),m_group(group),m_id(pi.m_id)
 	{}
 

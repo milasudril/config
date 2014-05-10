@@ -14,7 +14,7 @@ namespace Config
 	class ParamValue:public Paramobj
 		{
 		public:
-			ParamValue(const Paraminfo& info,Paramobj* group):
+			ParamValue(const Paraminfo& info,ParamGroup* group):
 				Paramobj(info,group)
 				,m_value( ((const ParamValueInfo<T>&)info).m_value )
 				,m_update_method( ((const ParamValueInfo<T>&)info).m_update_method )

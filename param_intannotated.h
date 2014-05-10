@@ -17,7 +17,7 @@ namespace Config
 	class ParamIntannotated:public ParamValue<T>
 		{
 		public:
-			ParamIntannotated(const Paraminfo& info,Paramobj* group):
+			ParamIntannotated(const Paraminfo& info,ParamGroup* group):
 				ParamValue<T>(info,group)
 				{
 				auto labels=((const ParamIntannotatedInfo<T>&)info).m_labels;
