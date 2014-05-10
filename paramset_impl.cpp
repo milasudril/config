@@ -7,7 +7,9 @@ target[name[paramset_impl.o] type[object]]
 #include "paramobj.h"
 
 #include "param_group.h"
-#include "param_numeric.h"
+#include "param_valuemapped.h"
+#include "param_intnamed.h"
+#include "param_flagset.h"
 
 #include <herbs/stack/stack.h>
 
@@ -21,14 +23,19 @@ namespace
 			ParamobjFactoryTable()
 				{
 				factories[(uint32_t)Paraminfo::Type::GROUP]=ParamGroup::create;
-				factories[(uint32_t)Paraminfo::Type::INT32]=ParamNumeric<int32_t>::create;
-				factories[(uint32_t)Paraminfo::Type::INT64]=ParamNumeric<int64_t>::create;
-				factories[(uint32_t)Paraminfo::Type::UINT32]=ParamNumeric<uint32_t>::create;
-				factories[(uint32_t)Paraminfo::Type::UINT32]=ParamNumeric<uint64_t>::create;
-				factories[(uint32_t)Paraminfo::Type::FLOAT]=ParamNumeric<float>::create;
-				factories[(uint32_t)Paraminfo::Type::DOUBLE]=ParamNumeric<double>::create;
-			
-			//	TODO: Contiue fill in
+				factories[(uint32_t)Paraminfo::Type::INT32]=ParamValuemapped<int32_t>::create;
+				factories[(uint32_t)Paraminfo::Type::INT64]=ParamValuemapped<int64_t>::create;
+				factories[(uint32_t)Paraminfo::Type::UINT32]=ParamValuemapped<uint32_t>::create;
+				factories[(uint32_t)Paraminfo::Type::UINT64]=ParamValuemapped<uint64_t>::create;
+				factories[(uint32_t)Paraminfo::Type::INTNAMED32]=ParamIntnamed<uint32_t>::create;
+				factories[(uint32_t)Paraminfo::Type::INTNAMED64]=ParamIntnamed<uint64_t>::create;
+				factories[(uint32_t)Paraminfo::Type::FLOAT]=ParamValuemapped<float>::create;
+				factories[(uint32_t)Paraminfo::Type::DOUBLE]=ParamValuemapped<double>::create;
+				factories[(uint32_t)Paraminfo::Type::TIMESTAMP]=ParamValuemapped<Herbs::Timestamp>::create;
+				factories[(uint32_t)Paraminfo::Type::FLAGSET32]=ParamFlagset<uint32_t>::create;
+				factories[(uint32_t)Paraminfo::Type::FLAGSET64]=ParamFlagset<uint32_t>::create;
+				factories[(uint32_t)Paraminfo::Type::STRING]=ParamValuemapped<Herbs::String>::create;
+				factories[(uint32_t)Paraminfo::Type::PATH]=ParamValuemapped<Herbs::Path>::create;
 				}
 				
 			Paramobj* create(const Paraminfo& info,Paramobj* group) const

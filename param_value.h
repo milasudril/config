@@ -7,13 +7,6 @@ target[name[param_value.h] type[include]]
 
 #include "paramobj.h"
 #include "param_value_info.h"
-#include "uiprovider.h"
-
-namespace Herbs
-	{
-	template<class T>
-	class ValueMap;
-	}
 
 namespace Config
 	{
@@ -24,18 +17,18 @@ namespace Config
 			ParamValue(const Paraminfo& info,Paramobj* group):
 				Paramobj(info,group)
 				,m_value( ((const ParamValueInfo<T>&)info).m_value )
-				,m_val_map( ((const ParamValueInfo<T>&)info).m_val_map )
+				,m_update_method( ((const ParamValueInfo<T>&)info).m_update_method )
 				{}
 			
 			T& valueGet()
 				{return m_value;}
-			
-			Herbs::ValueMap<T>& valueMapGet()
-				{return m_val_map;}
+				
+			typename ParamValueInfo<T>::UpdateMethod updateMethodGet() const
+				{return m_update_method;}
 
 		private:
 			T& m_value;
-			Herbs::ValueMap<T>& m_val_map;
+			typename ParamValueInfo<T>::UpdateMethod m_update_method;
 		};
 	}
 	

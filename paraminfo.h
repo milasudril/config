@@ -18,18 +18,17 @@ namespace Config
 			,INT64
 			,UINT32
 			,UINT64
-			,INT_NAMED
+			,INTNAMED32
+			,INTNAMED64
 			,FLOAT
 			,DOUBLE
 			,TIMESTAMP
-			,FLAGSET
+			,FLAGSET32
+			,FLAGSET64
 			,STRING
 			,PATH
 			,ID_MAX
 			};
-		
-		template<class T>
-		class TypeId;
 		
 		Paraminfo(const char_t* name,Type type,uint32_t id):
 			m_name(name),m_type(type),m_id(id){}
