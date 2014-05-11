@@ -8,10 +8,7 @@ target[name[param_valuemapped_info.h] type[include]]
 #include "paraminfo.h"
 
 namespace Herbs
-	{
-	template<class T>
-	class ValueMap;
-	
+	{	
 	class Timestamp;
 	
 	template<class T>
@@ -21,6 +18,13 @@ namespace Herbs
 	
 	class Path;
 	}
+	
+namespace MathExt
+	{
+	template<class T>
+	class ValueMap;
+	}
+	
 
 namespace Config
 	{		
@@ -32,11 +36,11 @@ namespace Config
 		ParamValuemappedInfo(const char_t* name,uint32_t id
 			,T& value
 			,typename ParamValueInfo<T>::UpdateMethod update_method
-			,Herbs::ValueMap<T>& val_map):
+			,MathExt::ValueMap<T>& val_map):
 			ParamValueInfo<T>(name,typeId(),id,value,update_method)
 				,m_val_map(val_map){}
 
-		Herbs::ValueMap<T>& m_val_map;				
+		MathExt::ValueMap<T>& m_val_map;				
 		};
 	
 	template<>

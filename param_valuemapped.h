@@ -9,12 +9,6 @@ target[name[param_valuemapped.h] type[include]]
 #include "param_valuemapped_info.h"
 #include "uiprovider.h"
 
-namespace Herbs
-	{
-	template<class T>
-	class ValueMap;
-	}
-
 namespace Config
 	{
 	template<class T>
@@ -29,14 +23,14 @@ namespace Config
 				,m_val_map( ((const ParamValuemappedInfo<T>&)info).m_val_map )
 				{}
 			
-			Herbs::ValueMap<T>& valueMapGet()
+			MathExt::ValueMap<T>& valueMapGet()
 				{return m_val_map;}
 				
 			void controlCreate(UIProvider& ui)
 				{ui.create(*this);}
 
 		private:
-			Herbs::ValueMap<T>& m_val_map;
+			MathExt::ValueMap<T>& m_val_map;
 		};
 	}
 	

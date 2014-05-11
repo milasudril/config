@@ -15,7 +15,7 @@ target[name[config-test] type[application]]
 
 #include <herbs/path/path.h>
 #include <herbs/timet/timet.h>
-#include <herbs/valuemap/valuemap.h>
+#include <mathext/valuemap.h>
 
 #include <herbs/textencoder/textencoder.h>
 #include <herbs/fileout/fileout.h>
@@ -42,7 +42,7 @@ struct Parameters
 	};
 	
 template<class T>
-class ValMap:public Herbs::ValueMap<T>
+class ValMap:public MathExt::ValueMap<T>
 	{
 	public:
 		T forward(const T& x) const
@@ -50,6 +50,13 @@ class ValMap:public Herbs::ValueMap<T>
 		
 		T backward(const T& y) const
 			{return y;}
+		
+		MathExt::Interval<T> range() const
+			{return {0,16};}
+		
+		MathExt::Interval<T> domain() const
+			{return {0,16};}
+		
 	};
 	
 class MyUI:public UIProvider
