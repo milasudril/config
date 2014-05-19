@@ -5,7 +5,7 @@ target[name[config-test] type[application]]
 
 #include <herbs/main/main.h>
 
-#include "paramset_impl.h"
+#include "paramset.h"
 
 #include "param_group.h"
 #include "param_valuemapped.h"
@@ -117,7 +117,7 @@ class MyUI:public UIProvider
 		void create(ParamValuemapped<double>& param)
 			{}
 		
-		void create(ParamValuemapped<Herbs::Timestamp>& param)
+		void create(ParamValueraw<Herbs::Timestamp>& param)
 			{}
 		
 		void create(ParamFlagset<uint32_t>& param)
@@ -126,10 +126,10 @@ class MyUI:public UIProvider
 		void create(ParamFlagset<uint64_t>& param)
 			{}
 		
-		void create(ParamValuemapped<Herbs::String>& param)
+		void create(ParamValueraw<Herbs::String>& param)
 			{}
 			
-		void create(ParamValuemapped<Herbs::Path>& param)
+		void create(ParamValueraw<Herbs::Path>& param)
 			{}
 		
 		
@@ -158,7 +158,7 @@ int MAIN(int argc,charsys_t* argv[])
 	Herbs::FileOut form(Herbs::Path(STR("test.html")));
 	Herbs::TextEncoder encoder(form,Herbs::TextEncoder::Mode::LATIN_1);
 	MyUI ui(encoder);
-	ParamsetImpl paramset(pi);
+	Paramset paramset(pi);
 	paramset.uiCreate(ui);
 	
 	

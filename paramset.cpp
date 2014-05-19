@@ -1,8 +1,8 @@
 #ifdef __WAND__
-target[name[paramset_impl.o] type[object]]
+target[name[paramset.o] type[object]]
 #endif
 
-#include "paramset_impl.h"
+#include "paramset.h"
 #include "paraminfo.h"
 #include "paramobj.h"
 
@@ -10,6 +10,7 @@ target[name[paramset_impl.o] type[object]]
 #include "param_valuemapped.h"
 #include "param_intnamed.h"
 #include "param_flagset.h"
+#include "param_valueraw.h"
 
 #include <herbs/stack/stack.h>
 
@@ -31,11 +32,11 @@ namespace
 				factories[(uint32_t)Paraminfo::Type::INTNAMED64]=ParamIntnamed<uint64_t>::create;
 				factories[(uint32_t)Paraminfo::Type::FLOAT]=ParamValuemapped<float>::create;
 				factories[(uint32_t)Paraminfo::Type::DOUBLE]=ParamValuemapped<double>::create;
-				factories[(uint32_t)Paraminfo::Type::TIMESTAMP]=ParamValuemapped<Herbs::Timestamp>::create;
+				factories[(uint32_t)Paraminfo::Type::TIMESTAMP]=ParamValueraw<Herbs::Timestamp>::create;
 				factories[(uint32_t)Paraminfo::Type::FLAGSET32]=ParamFlagset<uint32_t>::create;
 				factories[(uint32_t)Paraminfo::Type::FLAGSET64]=ParamFlagset<uint32_t>::create;
-				factories[(uint32_t)Paraminfo::Type::STRING]=ParamValuemapped<Herbs::String>::create;
-				factories[(uint32_t)Paraminfo::Type::PATH]=ParamValuemapped<Herbs::Path>::create;
+				factories[(uint32_t)Paraminfo::Type::STRING]=ParamValueraw<Herbs::String>::create;
+				factories[(uint32_t)Paraminfo::Type::PATH]=ParamValueraw<Herbs::Path>::create;
 				}
 				
 			Paramobj* create(const Paraminfo& info,ParamGroup* group) const
@@ -49,7 +50,7 @@ namespace
 	const ParamobjFactoryTable factory_table;
 	}
 
-Config::ParamsetImpl::ParamsetImpl(const Paraminfo* const* params)
+Config::Paramset::Paramset(const Paraminfo* const* params)
 	{
 	Herbs::Stack<ParamGroup*> nodes;
 	ParamGroupInfo root={STR("Parametrar"),0,0};
@@ -94,7 +95,7 @@ Config::ParamsetImpl::ParamsetImpl(const Paraminfo* const* params)
 		}
 	}
 
-void Config::ParamsetImpl::uiCreate(UIProvider& ui) const
+void Config::Paramset::uiCreate(UIProvider& ui) const
 	{
 	auto param=m_params.begin();
 	while(param!=m_params.end())
@@ -104,7 +105,7 @@ void Config::ParamsetImpl::uiCreate(UIProvider& ui) const
 		}
 	}
 
-Config::ParamsetImpl::~ParamsetImpl()
+Config::Paramset::~Paramset()
 	{
 	auto param=m_params.begin();
 	while(param!=m_params.end())

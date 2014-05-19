@@ -31,10 +31,14 @@ namespace Config
 	template<class T>
 	class ParamFlagset;
 	
+	template<class T>
+	class ParamValueraw;
+	
 	class UIProvider
 		{
 		public:
 			virtual void create(ParamGroup& group)=0;
+			
 			virtual void create(ParamValuemapped<int32_t>& param)=0;
 			virtual void create(ParamValuemapped<int64_t>& param)=0;
 			virtual void create(ParamValuemapped<uint32_t>& param)=0;
@@ -43,11 +47,11 @@ namespace Config
 			virtual void create(ParamIntnamed<uint64_t>& param)=0;
 			virtual void create(ParamValuemapped<float>& param)=0;
 			virtual void create(ParamValuemapped<double>& param)=0;
-			virtual void create(ParamValuemapped<Herbs::Timestamp>& param)=0;
+			virtual void create(ParamValueraw<Herbs::Timestamp>& param)=0;
 			virtual void create(ParamFlagset<uint32_t>& param)=0;
 			virtual void create(ParamFlagset<uint64_t>& param)=0;
-			virtual void create(ParamValuemapped<Herbs::String>& param)=0;
-			virtual void create(ParamValuemapped<Herbs::Path>& param)=0;
+			virtual void create(ParamValueraw<Herbs::String>& param)=0;
+			virtual void create(ParamValueraw<Herbs::Path>& param)=0;
 		};
 	}
 

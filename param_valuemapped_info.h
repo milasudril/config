@@ -5,7 +5,7 @@ target[name[param_valuemapped_info.h] type[include]]
 #ifndef CONFIG_PARAM_VALUEMAPPED_INFO_H
 #define CONFIG_PARAM_VALUEMAPPED_INFO_H
 
-#include "paraminfo.h"
+#include "param_value_info.h"
 
 namespace Herbs
 	{	

@@ -13,7 +13,7 @@ namespace Config
 	template<class T>
 	class ParamValue:public Paramobj
 		{
-		public:
+		public:		
 			ParamValue(const Paraminfo& info,ParamGroup* group):
 				Paramobj(info,group)
 				,m_value( ((const ParamValueInfo<T>&)info).m_value )
