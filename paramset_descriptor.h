@@ -9,10 +9,12 @@ target[name[paramset_descriptor.h] type[include]]
 
 namespace Config
 	{
+	class Paraminfo;
+	
 	class ParamsetDescirptor
 		{
 		public:
-			virtual Herbs::Array<ParamsetDescriptor> paraminfoGet()=0;
+			virtual Herbs::Array<Paraminfo*> paraminfoGet()=0;
 		};
 	}
 
