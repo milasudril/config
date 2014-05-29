@@ -62,7 +62,7 @@ class ValMap:public MathExt::ValueMap<T>
 class MyDescriptor:public Paramdescriptor
 	{
 	public:
-		const char_t* titleGet()
+		const char_t* titleGet() const
 			{return STR("Lorem Ipsum");}
 		
 		Herbs::ListPacked paraminfoGet()
