@@ -38,9 +38,9 @@ namespace Config
 			,typename ParamValueInfo<T>::UpdateMethod update_method
 			,MathExt::ValueMap<T>& val_map):
 			ParamValueInfo<T>(name,typeId(),id,value,update_method)
-				,m_val_map(val_map){}
+				,m_val_map(&val_map){}
 
-		MathExt::ValueMap<T>& m_val_map;				
+		MathExt::ValueMap<T>* m_val_map;				
 		};
 	
 	template<>

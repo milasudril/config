@@ -153,12 +153,12 @@ int MAIN(int argc,charsys_t* argv[])
 	
 	ParamGroupInfo group_2{STR("Sit amet"),1,1};
 	
-	Paraminfo* pi[]={&group,&an_int,&a_large_int,&group_2,&an_uint,&a_large_uint,nullptr};
+//	Paraminfo* pi[]={&group,&an_int,&a_large_int,&group_2,&an_uint,&a_large_uint,nullptr};
 	
 	Herbs::FileOut form(Herbs::Path(STR("test.html")));
 	Herbs::TextEncoder encoder(form,Herbs::TextEncoder::Mode::LATIN_1);
 	MyUI ui(encoder);
-	Paramset paramset(pi);
+	Paramset paramset({group,an_int,a_large_int,group_2,an_uint,a_large_uint});
 	paramset.uiCreate(ui);
 	
 	

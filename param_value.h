@@ -21,13 +21,13 @@ namespace Config
 				{}
 			
 			T& valueGet()
-				{return m_value;}
+				{return *m_value;}
 				
 			typename ParamValueInfo<T>::UpdateMethod updateMethodGet() const
 				{return m_update_method;}
 
 		private:
-			T& m_value;
+			T* m_value;
 			typename ParamValueInfo<T>::UpdateMethod m_update_method;
 		};
 	}

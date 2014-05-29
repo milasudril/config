@@ -21,9 +21,9 @@ namespace Config
 		ParamValueInfo(const char_t* name,Paraminfo::Type type,uint32_t id,T& value
 			,UpdateMethod update_method):
 			Paraminfo(name,type,id)
-				,m_value(value),m_update_method(update_method){}
+				,m_value(&value),m_update_method(update_method){}
 		
-		T& m_value;
+		T* m_value;
 		UpdateMethod m_update_method;
 		};
 	}

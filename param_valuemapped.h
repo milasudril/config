@@ -24,13 +24,13 @@ namespace Config
 				{}
 			
 			MathExt::ValueMap<T>& valueMapGet()
-				{return m_val_map;}
+				{return *m_val_map;}
 				
 			void controlCreate(UIProvider& ui)
 				{ui.create(*this);}
 
 		private:
-			MathExt::ValueMap<T>& m_val_map;
+			MathExt::ValueMap<T>* m_val_map;
 		};
 	}
 	

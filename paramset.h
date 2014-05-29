@@ -7,6 +7,7 @@ dependency[paramset.o]
 #define CONFIG_PARAMSET_H
 
 #include <herbs/array/array.h>
+#include <herbs/listpacked/listpacked.h>
 
 namespace Config
 	{
@@ -17,7 +18,7 @@ namespace Config
 	class Paramset
 		{
 		public:
-			Paramset(const Paraminfo* const* params);
+			Paramset(const Herbs::ListPacked& params);
 			~Paramset();
 			void uiCreate(UIProvider& ui) const;
 		

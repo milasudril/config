@@ -50,7 +50,7 @@ namespace
 	const ParamobjFactoryTable factory_table;
 	}
 
-Config::Paramset::Paramset(const Paraminfo* const* params)
+Config::Paramset::Paramset(const Herbs::ListPacked& param_list)
 	{
 	Herbs::Stack<ParamGroup*> nodes;
 	ParamGroupInfo root={STR("Parametrar"),0,0};
@@ -59,9 +59,12 @@ Config::Paramset::Paramset(const Paraminfo* const* params)
 	nodes.push(group_current);
 	m_params.append(group_current);
 	
-	while(*params!=nullptr)
+	auto param_current=param_list.begin();
+	
+	while(param_current!=param_list.end())
 		{
-		auto objinfo=*params;
+		auto objinfo=param_current.getPointer<Paraminfo>();
+	
 		switch(objinfo->m_type)
 			{
 			case Paraminfo::Type::GROUP:
@@ -91,7 +94,7 @@ Config::Paramset::Paramset(const Paraminfo* const* params)
 			default:
 				m_params.append(factory_table.create(*objinfo,group_current));
 			}
-		++params;
+		++param_current;
 		}
 	}
 
