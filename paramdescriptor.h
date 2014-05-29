@@ -13,7 +13,7 @@ namespace Config
 	class Paramdescriptor
 		{
 		public:
-			virtual const char_t* titleGet()=0;
+			virtual const char_t* titleGet() const=0;
 			virtual Herbs::ListPacked paraminfoGet()=0;			
 		};
 	}
