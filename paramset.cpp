@@ -50,14 +50,16 @@ namespace
 	const ParamobjFactoryTable factory_table;
 	}
 
-Config::Paramset::Paramset(const Herbs::ListPacked& param_list)
+Config::Paramset::Paramset(Paramdescriptor& descriptor)
 	{
 	Herbs::Stack<ParamGroup*> nodes;
-	ParamGroupInfo root={STR("Parametrar"),0,0};
+	ParamGroupInfo root={descriptor.titleGet(),0,0};
 
 	ParamGroup* group_current=new ParamGroup(root,nullptr);
 	nodes.push(group_current);
 	m_params.append(group_current);
+
+	auto param_list=descriptor.paraminfoGet();
 	
 	auto param_current=param_list.begin();
 	

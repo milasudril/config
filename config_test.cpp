@@ -59,6 +59,52 @@ class ValMap:public MathExt::ValueMap<T>
 		
 	};
 	
+class MyDescriptor:public Paramdescriptor
+	{
+	public:
+		const char_t* titleGet()
+			{return STR("Lorem Ipsum");}
+		
+		Herbs::ListPacked paraminfoGet()
+			{
+			ParamGroupInfo group{STR("Lorem ipsum"),1,1};
+			ParamValuemappedInfo<int32_t> an_int
+				{
+				 STR("An int"),2,params.an_int
+				,ParamValueInfo<int32_t>::UpdateMethod::NORMAL ,my_map_int32
+				};
+			ParamValuemappedInfo<int64_t> a_large_int
+				{
+				STR("A large int"),3,params.a_large_int
+					,ParamValueInfo<int64_t>::UpdateMethod::NORMAL,my_map_int64
+				};
+			ParamValuemappedInfo<uint32_t> an_uint
+				{
+				STR("An unsigned int"),4,params.an_unsigned_int
+					,ParamValueInfo<uint32_t>::UpdateMethod::NORMAL ,my_map_uint32
+				};
+	
+			ParamValuemappedInfo<uint64_t> a_large_uint
+				{
+				STR("A large unsigned int"),5,params.a_large_unsigned_int
+				,ParamValueInfo<uint64_t>::UpdateMethod::NORMAL,my_map_uint64
+				};
+
+			ParamGroupInfo group_2{STR("Sit amet"),1,1};
+			
+			return {group,an_int,a_large_int,an_uint,a_large_uint,group_2};
+			}
+			
+	private:
+		ValMap<int32_t> my_map_int32;
+		ValMap<int64_t> my_map_int64;
+		ValMap<uint32_t> my_map_uint32;
+		ValMap<uint64_t> my_map_uint64;
+		Parameters params;
+	};
+	
+
+	
 class MyUI:public UIProvider
 	{
 	public:
@@ -138,27 +184,14 @@ class MyUI:public UIProvider
 	};
 
 int MAIN(int argc,charsys_t* argv[])
-	{	
-	Parameters params;
-	ValMap<int32_t> my_map_int32;
-	ValMap<int64_t> my_map_int64;
-	ValMap<uint32_t> my_map_uint32;
-	ValMap<uint64_t> my_map_uint64;
-	
-	ParamGroupInfo group{STR("Lorem ipsum"),1,1};
-	ParamValuemappedInfo<int32_t> an_int{STR("An int"),2,params.an_int,ParamValueInfo<int32_t>::UpdateMethod::NORMAL ,my_map_int32};
-	ParamValuemappedInfo<int64_t> a_large_int{STR("A large int"),3,params.a_large_int,ParamValueInfo<int64_t>::UpdateMethod::NORMAL,my_map_int64};
-	ParamValuemappedInfo<uint32_t> an_uint{STR("An unsigned int"),4,params.an_unsigned_int,ParamValueInfo<uint32_t>::UpdateMethod::NORMAL ,my_map_uint32};
-	ParamValuemappedInfo<uint64_t> a_large_uint{STR("A large unsigned int"),5,params.a_large_unsigned_int,ParamValueInfo<uint64_t>::UpdateMethod::NORMAL,my_map_uint64};
-	
-	ParamGroupInfo group_2{STR("Sit amet"),1,1};
-	
-//	Paraminfo* pi[]={&group,&an_int,&a_large_int,&group_2,&an_uint,&a_large_uint,nullptr};
-	
+	{
 	Herbs::FileOut form(Herbs::Path(STR("test.html")));
 	Herbs::TextEncoder encoder(form,Herbs::TextEncoder::Mode::LATIN_1);
 	MyUI ui(encoder);
-	Paramset paramset({group,an_int,a_large_int,group_2,an_uint,a_large_uint});
+	
+	MyDescriptor descriptor;
+	
+	Paramset paramset(descriptor);
 	paramset.uiCreate(ui);
 	
 	
